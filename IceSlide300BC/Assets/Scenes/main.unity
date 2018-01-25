@@ -220,7 +220,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wallPrefab: {fileID: 1324058090252872, guid: 68522e2009ee36541b345b9b99fc7392, type: 2}
-  acorn: {fileID: 0}
+  acorn: {fileID: 2074811686}
+  isOutBounds: 0
 --- !u!4 &247165446
 Transform:
   m_ObjectHideFlags: 0
@@ -1468,6 +1469,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2e0b2db833046f4a8bccce38a8949df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  arrayPosition: {x: 0, y: 0}
+  direction: {x: 0, y: 0}
 --- !u!212 &2074811687
 SpriteRenderer:
   m_ObjectHideFlags: 0

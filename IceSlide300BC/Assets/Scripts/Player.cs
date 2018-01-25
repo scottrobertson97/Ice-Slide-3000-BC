@@ -5,7 +5,7 @@ public class Player : MonoBehaviour {
     private GameManager gameManager;
     private Vector2Int arrayPosition;
 	private Vector2Int futurePosisiton;
-	private static float MOVE_TIME = 0.25f;
+	private static float MOVE_TIME = 0.15f;
 	private float moveTimer;
 	private bool isMoving;
 

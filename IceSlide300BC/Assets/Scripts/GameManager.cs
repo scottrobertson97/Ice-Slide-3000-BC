@@ -5,7 +5,10 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 	//wall
 	public GameObject wallPrefab;
-	public GameObject acorn;
+	public Acorn acorn;
+
+    //bool for acorn being out of bounds
+    public bool isOutBounds;
 
 	private enum Board : int {Floor = 0, Wall = 1, Acorn = 2};
     //array of things on the board
@@ -13,15 +16,20 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//make 5,5 a wall
-		board [5, 5] = Board.Wall;
+		//make walls and set 2,2 as an acorn
+		board[5, 5] = Board.Wall;
+        board[7, 2] = Board.Wall;
+        board[6, 9] = Board.Wall;
+        board[1, 8] = Board.Wall;
+
+        board[2, 2] = Board.Acorn;
 		createWalls ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+
+    }
 
 	/// <summary>
 	/// Creates the sprites for the walls
@@ -64,6 +72,37 @@ public class GameManager : MonoBehaviour {
 	/// <returns><c>true</c>, if acorn was moved, <c>false</c> otherwise.</returns>
 	/// <param name="direction">Direction.</param>
 	private bool MoveAcorn(Vector2Int direction){
-		return false;
+
+        Vector2Int destination = acorn.arrayPosition;
+        Vector2Int futurePos = acorn.arrayPosition;
+
+
+        //Move through grid to see if acorn hits a wall or goes out of bounds
+        while (futurePos.x >= 0 || futurePos.x < 10 || futurePos.y >= 0 || futurePos.y < 10)
+        {
+            //if acorn is out of bounds
+            if (futurePos.x < 0 || futurePos.x >= 10 || futurePos.y < 0 || futurePos.y >= 10)
+            {
+                destination = futurePos + direction;//moves acorn off grid
+                isOutBounds = true;
+                break;
+            }
+            //Set acorn next to wall
+            if (board[futurePos.x, futurePos.y] == Board.Wall)
+            {
+                destination = futurePos - direction;
+                break;
+            }
+
+            futurePos += direction;
+        }
+            
+        //Sets acorn destination
+        acorn.SetDestination(direction, destination);
+
+        //Update board for new acorn location
+        if (!isOutBounds) board[destination.x, destination.y] = Board.Acorn;
+        board[acorn.arrayPosition.x, acorn.arrayPosition.y] = Board.Floor;
+        return false;
 	}
 }
