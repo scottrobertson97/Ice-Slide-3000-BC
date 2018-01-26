@@ -14,16 +14,17 @@ public class GameManager : MonoBehaviour {
     //array of things on the board
 	private Board[,] board = new Board[10,10];
 
+    private struct level
+    {
+        public Board[,] board;
+        public List<GameObject> acorns;
+    }
+
+    private List<level> levels;
+
 	// Use this for initialization
 	void Start () {
-		//make walls and set 2,2 as an acorn
-		board[5, 5] = Board.Wall;
-        board[7, 2] = Board.Wall;
-        board[6, 9] = Board.Wall;
-        board[1, 8] = Board.Wall;
-
-        board[2, 2] = Board.Acorn;
-		createWalls ();
+        GenerateLevel();
 	}
 	
 	// Update is called once per frame
@@ -31,10 +32,22 @@ public class GameManager : MonoBehaviour {
 
     }
 
+    private void GenerateLevel()
+    {
+        //make walls and set 2,2 as an acorn
+        board[5, 5] = Board.Wall;
+        board[7, 2] = Board.Wall;
+        board[6, 9] = Board.Wall;
+        board[1, 8] = Board.Wall;
+
+        board[2, 2] = Board.Acorn;
+        CreateWalls();
+    }
+
 	/// <summary>
 	/// Creates the sprites for the walls
 	/// </summary>
-	void createWalls(){
+	private void CreateWalls(){
 		for (int x = 0; x < 10; x++) {
 			for (int y = 0; y < 10; y++) {
 				if (board [x, y] == Board.Wall) {
@@ -79,11 +92,6 @@ public class GameManager : MonoBehaviour {
 		if (board [futurePos.x, futurePos.y] != Board.Floor)
 			return false;
 
-		/*
-		while (futurePos.x >= 0 || futurePos.x < 10 || futurePos.y >= 0 || futurePos.y < 10)
-		is always true
-		*/
-
         //Move through grid to see if acorn hits a wall or goes out of bounds
         while (true)
         {
@@ -91,8 +99,9 @@ public class GameManager : MonoBehaviour {
             if (futurePos.x < 0 || futurePos.x >= 10 || futurePos.y < 0 || futurePos.y >= 10)
             {
 				//moves acorn off grid
-				destination = futurePos; // + direction; moves it 2 off the grid
+				destination = futurePos;
                 isOutBounds = true;
+                Lose();
                 break;
             }
             //Set acorn next to wall
@@ -114,4 +123,14 @@ public class GameManager : MonoBehaviour {
 		//return true, so they player moves as they push
         return true;
 	}
+
+    private void Lose()
+    {
+
+    }
+
+    private void Win()
+    {
+
+    }
 }
