@@ -74,21 +74,29 @@ public class GameManager : MonoBehaviour {
 	private bool MoveAcorn(Vector2Int direction){
 
         Vector2Int destination = acorn.arrayPosition;
-        Vector2Int futurePos = acorn.arrayPosition;
+		Vector2Int futurePos = acorn.arrayPosition + direction;
 
+		if (board [futurePos.x, futurePos.y] != Board.Floor)
+			return false;
+
+		/*
+		while (futurePos.x >= 0 || futurePos.x < 10 || futurePos.y >= 0 || futurePos.y < 10)
+		is always true
+		*/
 
         //Move through grid to see if acorn hits a wall or goes out of bounds
-        while (futurePos.x >= 0 || futurePos.x < 10 || futurePos.y >= 0 || futurePos.y < 10)
+        while (true)
         {
             //if acorn is out of bounds
             if (futurePos.x < 0 || futurePos.x >= 10 || futurePos.y < 0 || futurePos.y >= 10)
             {
-                destination = futurePos + direction;//moves acorn off grid
+				//moves acorn off grid
+				destination = futurePos; // + direction; moves it 2 off the grid
                 isOutBounds = true;
                 break;
             }
             //Set acorn next to wall
-            if (board[futurePos.x, futurePos.y] == Board.Wall)
+			if (board[futurePos.x, futurePos.y] != Board.Floor)
             {
                 destination = futurePos - direction;
                 break;
@@ -103,6 +111,7 @@ public class GameManager : MonoBehaviour {
         //Update board for new acorn location
         if (!isOutBounds) board[destination.x, destination.y] = Board.Acorn;
         board[acorn.arrayPosition.x, acorn.arrayPosition.y] = Board.Floor;
-        return false;
+		//return true, so they player moves as they push
+        return true;
 	}
 }
