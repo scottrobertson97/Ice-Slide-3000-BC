@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour {
 
     private void GenerateLevel()
     {
+        //
         //make walls and set 2,2 as an acorn
         board[5, 5] = Board.Wall;
         board[7, 2] = Board.Wall;
