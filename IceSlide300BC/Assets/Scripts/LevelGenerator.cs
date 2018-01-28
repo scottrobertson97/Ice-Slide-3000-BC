@@ -39,7 +39,7 @@ public class LevelGenerator : MonoBehaviour {
 			return Board.Wall;
 		} else if (pixelColor == Color.blue) {
 			GameObject.Find ("Player").transform.position = new Vector3 (x, y, 0);
-			return Board.Player;
+			return Board.Floor;
 		} else if (pixelColor == Color.green) {
 			GameObject acorn = (GameObject)Instantiate (acornPrefab, new Vector3 (x, y, 0), Quaternion.identity);
 			level.acorns.Add (acorn);

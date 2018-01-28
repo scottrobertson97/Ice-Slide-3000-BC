@@ -11,7 +11,7 @@ public struct Level
 
 public class GameManager : MonoBehaviour {
     //bool for acorn being out of bounds
-    public bool isOutBounds;
+    //public bool isOutBounds;
 
 	private Level currentLevel;
 
@@ -65,6 +65,8 @@ public class GameManager : MonoBehaviour {
 		Vector2Int destination = acornPosition;
 		Vector2Int futurePos = acornPosition + direction;
 
+		bool isOutOfBounds = false;
+
 		if (currentLevel.board [futurePos.x, futurePos.y] != Board.Floor)
 			return false;
 
@@ -76,7 +78,7 @@ public class GameManager : MonoBehaviour {
             {
 				//moves acorn off grid
 				destination = futurePos;
-                isOutBounds = true;
+				isOutOfBounds = true;
                 Lose();
                 break;
             }
@@ -95,7 +97,7 @@ public class GameManager : MonoBehaviour {
 		acorn.SetDestination(direction, destination);
 
         //Update board for new acorn location
-		if (!isOutBounds) currentLevel.board[destination.x, destination.y] = Board.Acorn;
+		if (!isOutOfBounds) currentLevel.board[destination.x, destination.y] = Board.Acorn;
         currentLevel.board[acorn.arrayPosition.x, acorn.arrayPosition.y] = Board.Floor;
 		//return true, so they player moves as they push
         return true;
