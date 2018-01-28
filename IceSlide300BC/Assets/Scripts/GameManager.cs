@@ -2,25 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour {
-	//wall
-	public GameObject wallPrefab;
-	public Acorn acorn;
+public enum Board : int {Floor, Wall, Acorn, Player};
+public struct Level
+{
+	public Board[,] board;
+	public List<GameObject> acorns;
+}
 
+public class GameManager : MonoBehaviour {
     //bool for acorn being out of bounds
     public bool isOutBounds;
 
-	private enum Board : int {Floor = 0, Wall = 1, Acorn = 2};
-    //array of things on the board
-	private Board[,] board = new Board[10,10];
+	private Level currentLevel;
 
-    private struct level
-    {
-        public Board[,] board;
-        public List<GameObject> acorns;
-    }
-
-    private List<level> levels;
+	private List<Level> levels;
 
 	// Use this for initialization
 	void Start () {
@@ -34,29 +29,8 @@ public class GameManager : MonoBehaviour {
 
     private void GenerateLevel()
     {
-        //
-        //make walls and set 2,2 as an acorn
-        board[5, 5] = Board.Wall;
-        board[7, 2] = Board.Wall;
-        board[6, 9] = Board.Wall;
-        board[1, 8] = Board.Wall;
-
-        board[2, 2] = Board.Acorn;
-        CreateWalls();
+		currentLevel = GetComponent<LevelGenerator> ().GenerateLevel ();
     }
-
-	/// <summary>
-	/// Creates the sprites for the walls
-	/// </summary>
-	private void CreateWalls(){
-		for (int x = 0; x < 10; x++) {
-			for (int y = 0; y < 10; y++) {
-				if (board [x, y] == Board.Wall) {
-					Instantiate (wallPrefab, new Vector3 (x, y, 0), Quaternion.identity);
-				}
-			}
-		}
-	}
 
     /// <summary>
 	/// check if the player can move and handle what happens next
@@ -70,11 +44,11 @@ public class GameManager : MonoBehaviour {
 			return false;
 		}
         //makes sure that the player is moving onto a tile that is open
-		else if(board[futurePos.x, futurePos.y] == Board.Floor){
+		else if(currentLevel.board[futurePos.x, futurePos.y] == Board.Floor){
             return true;
         }
-		else if(board[futurePos.x, futurePos.y] == Board.Acorn){
-			return MoveAcorn (futurePos - currentPos);
+		else if(currentLevel.board[futurePos.x, futurePos.y] == Board.Acorn){
+			return MoveAcorn (futurePos, futurePos - currentPos);
 		}
         else
             return false;
@@ -85,12 +59,13 @@ public class GameManager : MonoBehaviour {
 	/// </summary>
 	/// <returns><c>true</c>, if acorn was moved, <c>false</c> otherwise.</returns>
 	/// <param name="direction">Direction.</param>
-	private bool MoveAcorn(Vector2Int direction){
+	private bool MoveAcorn(Vector2Int acornPosition, Vector2Int direction){
+		Acorn acorn = GetAcornAtPosition (acornPosition);
 
-        Vector2Int destination = acorn.arrayPosition;
-		Vector2Int futurePos = acorn.arrayPosition + direction;
+		Vector2Int destination = acornPosition;
+		Vector2Int futurePos = acornPosition + direction;
 
-		if (board [futurePos.x, futurePos.y] != Board.Floor)
+		if (currentLevel.board [futurePos.x, futurePos.y] != Board.Floor)
 			return false;
 
         //Move through grid to see if acorn hits a wall or goes out of bounds
@@ -106,7 +81,7 @@ public class GameManager : MonoBehaviour {
                 break;
             }
             //Set acorn next to wall
-			if (board[futurePos.x, futurePos.y] != Board.Floor)
+			if (currentLevel.board[futurePos.x, futurePos.y] != Board.Floor)
             {
                 destination = futurePos - direction;
                 break;
@@ -116,13 +91,28 @@ public class GameManager : MonoBehaviour {
         }
             
         //Sets acorn destination
-        acorn.SetDestination(direction, destination);
+
+		acorn.SetDestination(direction, destination);
 
         //Update board for new acorn location
-        if (!isOutBounds) board[destination.x, destination.y] = Board.Acorn;
-        board[acorn.arrayPosition.x, acorn.arrayPosition.y] = Board.Floor;
+		if (!isOutBounds) currentLevel.board[destination.x, destination.y] = Board.Acorn;
+        currentLevel.board[acorn.arrayPosition.x, acorn.arrayPosition.y] = Board.Floor;
 		//return true, so they player moves as they push
         return true;
+	}
+
+	private Acorn GetAcornAtPosition(Vector2Int acornPosition){
+		Acorn acorn = null;
+		foreach (GameObject a in currentLevel.acorns) {
+			if ((int)a.transform.position.x == acornPosition.x && (int)a.transform.position.y == acornPosition.y) {
+				acorn = a.GetComponent<Acorn> ();
+			}
+		}
+		if (acorn == null) {
+			throw new UnityException("acorn not found at that position");
+		} else {
+			return acorn;
+		}
 	}
 
     private void Lose()
