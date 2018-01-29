@@ -5,7 +5,7 @@ using UnityEngine;
 public class LevelGenerator : MonoBehaviour {
 	public GameObject wallPrefab;
 	public GameObject acornPrefab;
-	public Texture2D map;
+	private Texture2D map;
 
 	// Use this for initialization
 	void Start () {
@@ -17,7 +17,8 @@ public class LevelGenerator : MonoBehaviour {
 		
 	}
 
-	public Level GenerateLevel(){
+	public Level GenerateLevel(Texture2D _map){
+		this.map = _map;
 		Level level = new Level();
 		level.board = new Board[map.width, map.height];
 		level.acorns = new List<GameObject> ();

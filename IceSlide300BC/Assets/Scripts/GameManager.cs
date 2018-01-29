@@ -9,17 +9,15 @@ public struct Level
 	public List<GameObject> acorns;
 }
 
-public class GameManager : MonoBehaviour {
-    //bool for acorn being out of bounds
-    //public bool isOutBounds;
-
+public class GameManager : MonoBehaviour {	
 	private Level currentLevel;
 
-	private List<Level> levels;
+	//list of maps
+	public List<Texture2D> maps;
 
 	// Use this for initialization
 	void Start () {
-        GenerateLevel();
+        GenerateLevel(0);
 	}
 	
 	// Update is called once per frame
@@ -27,9 +25,10 @@ public class GameManager : MonoBehaviour {
 
     }
 
-    private void GenerateLevel()
+
+	private void GenerateLevel(int index)
     {
-		currentLevel = GetComponent<LevelGenerator> ().GenerateLevel ();
+		currentLevel = GetComponent<LevelGenerator> ().GenerateLevel (maps[index]);
     }
 
     /// <summary>
@@ -103,8 +102,14 @@ public class GameManager : MonoBehaviour {
         return true;
 	}
 
+	/// <summary>
+	/// Gets the acorn at position.
+	/// </summary>
+	/// <returns>The acorn at position.</returns>
+	/// <param name="acornPosition">Acorn position.</param>
 	private Acorn GetAcornAtPosition(Vector2Int acornPosition){
 		Acorn acorn = null;
+		//search through the acorns in this level to find the one at the position
 		foreach (GameObject a in currentLevel.acorns) {
 			if ((int)a.transform.position.x == acornPosition.x && (int)a.transform.position.y == acornPosition.y) {
 				acorn = a.GetComponent<Acorn> ();
