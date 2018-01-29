@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        GenerateLevel(0);
+        GenerateLevel(1);
 	}
 	
 	// Update is called once per frame
@@ -66,8 +66,10 @@ public class GameManager : MonoBehaviour {
 
 		bool isOutOfBounds = false;
 
-		if (currentLevel.board [futurePos.x, futurePos.y] != Board.Floor)
-			return false;
+        if (!(futurePos.x < 0 || futurePos.x >= 10 || futurePos.y < 0 || futurePos.y >= 10)) {
+            if (currentLevel.board[futurePos.x, futurePos.y] != Board.Floor)
+                return false;
+        }
 
         //Move through grid to see if acorn hits a wall or goes out of bounds
         while (true)
