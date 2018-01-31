@@ -11,18 +11,53 @@ public struct Level
 
 public class GameManager : MonoBehaviour {	
 	private Level currentLevel;
+    private int currentLevelID;
+
+    public bool isPlaying;
 
 	//list of maps
 	public List<Texture2D> maps;
 
 	// Use this for initialization
 	void Start () {
-        GenerateLevel(1);
+        currentLevelID = 0;
+        GenerateLevel(currentLevelID);
+        isPlaying = true;
 	}
-	
-	// Update is called once per frame
-	void Update () {
 
+    void ClearLevel()
+    {
+        foreach(GameObject acorn in currentLevel.acorns)
+        {
+            Destroy(acorn);
+        }
+    }
+    //reset the current Level;
+    void Reset()
+    {
+        ClearLevel();
+        GenerateLevel(currentLevelID);
+        isPlaying = true;
+    }
+
+    void NextLevel()
+    {
+        currentLevelID++;
+        ClearLevel();
+        GenerateLevel(currentLevelID);
+
+    }
+
+    // Update is called once per frame
+    void Update () {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            isPlaying = !isPlaying;
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Reset();
+        }
     }
 
 
@@ -87,6 +122,7 @@ public class GameManager : MonoBehaviour {
 			if (currentLevel.board[futurePos.x, futurePos.y] != Board.Floor)
             {
                 destination = futurePos - direction;
+                acorn.TakeHit();//reduce the acorn hits
                 break;
             }
 
@@ -100,6 +136,8 @@ public class GameManager : MonoBehaviour {
         //Update board for new acorn location
 		if (!isOutOfBounds) currentLevel.board[destination.x, destination.y] = Board.Acorn;
         currentLevel.board[acorn.arrayPosition.x, acorn.arrayPosition.y] = Board.Floor;
+
+        CheckConditions(isOutOfBounds);
 		//return true, so they player moves as they push
         return true;
 	}
@@ -124,13 +162,31 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+    //Check Win conditions
+    private void CheckConditions(bool isOutOfBounds)
+    {
+        foreach (GameObject acorn in currentLevel.acorns)
+        {
+            Acorn a = acorn.GetComponent<Acorn>();
+            if (!a.finished)
+            {
+                return;
+            }
+        }
+        Win();
+    }
+
     private void Lose()
     {
-
+        isPlaying = false;
+        Debug.Log("You're Loser");
+        //ShowLoseSceen();
     }
 
     private void Win()
     {
-
+        isPlaying = false;
+        Debug.Log("You're Winner");
+        //ShowWinScreen();
     }
 }

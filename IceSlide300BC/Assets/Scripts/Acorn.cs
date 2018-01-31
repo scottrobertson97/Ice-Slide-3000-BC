@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Acorn : MonoBehaviour {
     private bool isMoving;
+    public bool finished;
 
     public Vector2Int arrayPosition;
     public Vector2Int direction;
@@ -11,6 +12,7 @@ public class Acorn : MonoBehaviour {
 
     private static float MOVE_TIME = 0.35f;
     private float moveTimer;
+    private float hits;
 
 
 	// Use this for initialization
@@ -21,6 +23,8 @@ public class Acorn : MonoBehaviour {
 
         moveTimer = 0;
         isMoving = false;
+        finished = false;
+        hits = 1;
     }
 
     //Set destination / future position
@@ -49,6 +53,12 @@ public class Acorn : MonoBehaviour {
         
     }
 
+    //Reduce hits acorn can take
+    public void TakeHit()
+    {
+        hits--;
+        if(hits <= 0) { finished = true; }
+    }
 
     // Update is called once per frame
     void Update () {
