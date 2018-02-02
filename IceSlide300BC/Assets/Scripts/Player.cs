@@ -22,10 +22,16 @@ public class Player : MonoBehaviour {
 		Move();
 	}
 
-	/// <summary>
-	/// Handles player movement and input
-	/// </summary>
-	private void Move()
+    public void Reset()
+    {
+        arrayPosition = gameManager.playerPos;
+    }
+
+
+    /// <summary>
+    /// Handles player movement and input
+    /// </summary>
+    private void Move()
 	{
         if (gameManager.isPlaying)
         {
