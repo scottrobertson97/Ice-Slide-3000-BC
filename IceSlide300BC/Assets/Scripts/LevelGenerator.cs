@@ -5,6 +5,7 @@ using UnityEngine;
 public class LevelGenerator : MonoBehaviour {
 	public GameObject wallPrefab;
 	public GameObject acornPrefab;
+	public GameObject floorSprite;
 	private Texture2D map;
 
 	// Use this for initialization
@@ -22,6 +23,8 @@ public class LevelGenerator : MonoBehaviour {
 		Level level = new Level();
 		level.board = new Board[map.width, map.height];
 		level.acorns = new List<GameObject> ();
+
+		floorSprite.GetComponent<SpriteRenderer> ().size = new Vector2 (map.width, map.height);
 
 		for (int x = 0; x < map.width; x++) {
 			for (int y = 0; y < map.height; y++) {
