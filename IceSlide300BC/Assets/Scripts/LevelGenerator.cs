@@ -5,6 +5,7 @@ using UnityEngine;
 public class LevelGenerator : MonoBehaviour {
 	public GameObject wallPrefab;
 	public GameObject acornPrefab;
+	public GameObject floorSprite;
 	private Texture2D map;
 
 	// Use this for initialization
@@ -22,9 +23,10 @@ public class LevelGenerator : MonoBehaviour {
 		Level level = new Level();
 		level.board = new Board[map.width, map.height];
 		level.acorns = new List<GameObject> ();
-        level.walls = new List<GameObject>();
 
-        for (int x = 0; x < map.width; x++) {
+		floorSprite.GetComponent<SpriteRenderer> ().size = new Vector2 (map.width, map.height);
+
+		for (int x = 0; x < map.width; x++) {
 			for (int y = 0; y < map.height; y++) {
 				level.board[x,y] = GenerateTile (x, y, ref level);
 			}
@@ -37,13 +39,11 @@ public class LevelGenerator : MonoBehaviour {
 		Color pixelColor = map.GetPixel (x, y);
 
 		if (pixelColor == Color.black) {
-			GameObject wall = Instantiate (wallPrefab, new Vector3 (x, y, 0), Quaternion.identity);
-            level.walls.Add(wall);
+			Instantiate (wallPrefab, new Vector3 (x, y, 0), Quaternion.identity);
 			return Board.Wall;
 		} else if (pixelColor == Color.blue) {
 			GameObject.Find ("Player").transform.position = new Vector3 (x, y, 0);
-            level.playerPosition = new Vector3(x, y, 0);
-            return Board.Floor;
+			return Board.Floor;
 		} else if (pixelColor == Color.green) {
 			GameObject acorn = (GameObject)Instantiate (acornPrefab, new Vector3 (x, y, 0), Quaternion.identity);
 			level.acorns.Add (acorn);
