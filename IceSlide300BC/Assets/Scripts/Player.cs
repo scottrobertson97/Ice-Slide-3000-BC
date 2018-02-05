@@ -22,55 +22,66 @@ public class Player : MonoBehaviour {
 		Move();
 	}
 
-	/// <summary>
-	/// Handles player movement and input
-	/// </summary>
-	private void Move()
+    public void Reset()
+    {
+        arrayPosition = gameManager.playerPos;
+    }
+
+
+    /// <summary>
+    /// Handles player movement and input
+    /// </summary>
+    private void Move()
 	{
-		//what to so if the player is currently moving
-		//this returns at the end, so if the player is moving then there is not input
-		if (isMoving) {
-			LERP ();
-			return;
-		}
+        if (gameManager.isPlaying)
+        {
+            //what to so if the player is currently moving
+            //this returns at the end, so if the player is moving then there is not input
+            if (isMoving)
+            {
+                LERP();
+                return;
+            }
 
-        //movement direction
-		Vector2Int move = new Vector2Int();
-        
-		//get input and the direction vector
-		if (Input.GetKeyDown (KeyCode.LeftArrow)) 
-		{
-            move += Vector2Int.left;
-		}
-		if (Input.GetKeyDown (KeyCode.RightArrow)) 
-		{
-			move += Vector2Int.right;
-		}
-		if (Input.GetKeyDown (KeyCode.UpArrow)) 
-		{
-			move += Vector2Int.up;
-		}
-		if (Input.GetKeyDown (KeyCode.DownArrow)) 
-		{
-			move += Vector2Int.down;
-		}
+            //movement direction
+            Vector2Int move = new Vector2Int();
 
-		//if it is zero, no input was given, so return
-		if(move == Vector2Int.zero)
-            return;
+            //get input and the direction vector
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                move += Vector2Int.left;
+            }
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                move += Vector2Int.right;
+            }
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                move += Vector2Int.up;
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                move += Vector2Int.down;
+            }
 
-		//see if the player can move into that spot
-        bool canMove = gameManager.CanPlayerMove(arrayPosition, arrayPosition + move);
-		//if they can
-        if(canMove){
-			//set moving
-			isMoving = true;
-			//set future position
-			futurePosisiton = arrayPosition + move;
+            //if it is zero, no input was given, so return
+            if (move == Vector2Int.zero)
+                return;
+
+            //see if the player can move into that spot
+            bool canMove = gameManager.CanPlayerMove(arrayPosition, arrayPosition + move);
+            //if they can
+            if (canMove)
+            {
+                //set moving
+                isMoving = true;
+                //set future position
+                futurePosisiton = arrayPosition + move;
+            }
+            /*
+            Implement LERP to new position
+            */
         }
-		/*
-		Implement LERP to new position
-		*/
 	}
 
 	private void LERP(){
