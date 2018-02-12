@@ -249,8 +249,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlaying: 0
+  playerPos: {x: 0, y: 0}
   maps:
   - {fileID: 2800000, guid: cad490d7b4521dd45aa63dd7f6ef80cd, type: 3}
+  - {fileID: 2800000, guid: 743f2cfe128d5954b967d4b8192409cf, type: 3}
 --- !u!1 &274292845
 GameObject:
   m_ObjectHideFlags: 0
@@ -480,7 +482,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1097517416}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 458.5, y: 258, z: 0}
+  m_LocalPosition: {x: 462.5, y: 260, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1354696146}
@@ -516,7 +518,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1354696145}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -354.5, y: 222, z: 0}
+  m_LocalPosition: {x: -358.5, y: 224, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1097517420}

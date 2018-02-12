@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        currentLevelID = 0;
+        currentLevelID = GameObject.Find ("LevelSelectObject").GetComponent<LevelSelectObject> ().level;
         GenerateLevel(currentLevelID);
         playerPos = new Vector2Int((int)currentLevel.playerPosition.x, (int)currentLevel.playerPosition.y);
         isPlaying = true;
