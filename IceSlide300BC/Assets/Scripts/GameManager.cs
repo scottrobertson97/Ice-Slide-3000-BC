@@ -7,30 +7,41 @@ public struct Level
 {
 	public Board[,] board;
 	public List<GameObject> acorns;
+    public List<GameObject> walls;
+    public Vector3 playerPosition;
 }
 
 public class GameManager : MonoBehaviour {	
 	private Level currentLevel;
-    public int currentLevelID = 0;
+    private int currentLevelID;//number of current level
 
     public bool isPlaying;
+    public Vector2Int playerPos;
 
 	//list of maps
 	public List<Texture2D> maps;
 
 	// Use this for initialization
 	void Start () {
+        currentLevelID = GameObject.Find ("LevelSelectObject").GetComponent<LevelSelectObject> ().level;
         GenerateLevel(currentLevelID);
+        playerPos = new Vector2Int((int)currentLevel.playerPosition.x, (int)currentLevel.playerPosition.y);
         isPlaying = true;
 	}
 
+    //Destroys all game objects in level for Re-generation
     void ClearLevel()
     {
         foreach(GameObject acorn in currentLevel.acorns)
         {
             Destroy(acorn);
         }
+        foreach (GameObject wall in currentLevel.walls)
+        {
+            Destroy(wall);
+        }
     }
+
     //reset the current Level;
     void Reset()
     {
@@ -39,6 +50,7 @@ public class GameManager : MonoBehaviour {
         isPlaying = true;
     }
 
+    //Goes to next level
     void NextLevel()
     {
         currentLevelID++;
@@ -49,11 +61,11 @@ public class GameManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.P))//Pause
         {
             isPlaying = !isPlaying;
         }
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) && !isPlaying)
         {
             Reset();
         }
