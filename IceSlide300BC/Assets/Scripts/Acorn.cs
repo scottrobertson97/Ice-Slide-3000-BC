@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Acorn : MonoBehaviour {
-    private bool isMoving;
-    public bool finished;
+    public bool isMoving;
+    public bool broken;
+
+    private SpriteRenderer spriteRenderer;
+    private SpriteRenderer spriteRendererN;
+    public Sprite[] numbers;
 
     public Vector2Int arrayPosition;
     public Vector2Int direction;
@@ -12,8 +16,10 @@ public class Acorn : MonoBehaviour {
 
     private static float MOVE_TIME = 0.35f;
     private float moveTimer;
-    private float hits;
+    private int hits;
 
+    private bool dis;
+    private float alpha;
 
 	// Use this for initialization
 	void Start () {
@@ -21,10 +27,22 @@ public class Acorn : MonoBehaviour {
         destination = new Vector2Int((int)transform.position.x, (int)transform.position.y);
         direction = Vector2Int.zero;
 
+        spriteRenderer = transform.GetComponent<SpriteRenderer>();
+        spriteRendererN = transform.GetChild(0).transform.GetComponent<SpriteRenderer>(); //Sprite Renderer for number of hits
+        spriteRendererN.sprite = numbers[hits];
+
         moveTimer = 0;
         isMoving = false;
-        finished = false;
-        hits = 1;
+        broken = false;
+
+        dis = false;
+        alpha = 100;
+    }
+
+    //Sets number of hits
+    public void setHits(int hit)
+    {
+        hits = hit;
     }
 
     //Set destination / future position
@@ -34,8 +52,25 @@ public class Acorn : MonoBehaviour {
         destination = dest;
     }
 
+    //Makes acorn Fade out over time
+    void Disappear()
+    {
+        if (dis && broken)
+        {
+            Color aColor = spriteRenderer.color;
+            alpha -= 2;
+            aColor.a = alpha;
+            spriteRenderer.color = aColor;
+            spriteRendererN.color = aColor;
+
+            if (alpha <= 0) dis = false;
+        }
+    }
+
     void Move ()
     {
+
+
         if (isMoving)
         {
             LERP();
@@ -49,6 +84,7 @@ public class Acorn : MonoBehaviour {
         {
             isMoving = false;
             direction = Vector2Int.zero;
+            Disappear();
         }
         
     }
@@ -57,7 +93,11 @@ public class Acorn : MonoBehaviour {
     public void TakeHit()
     {
         hits--;
-        if(hits <= 0) { finished = true; }
+        if (hits <= 0)
+        {
+            broken = true;
+            return;
+        }
     }
 
     // Update is called once per frame
@@ -89,6 +129,12 @@ public class Acorn : MonoBehaviour {
             arrayPosition = destination;
             //set the transform
             transform.position = new Vector3(arrayPosition.x, arrayPosition.y, 0);
+
+            //change the number sprite
+            spriteRendererN.sprite = numbers[hits];
+            //check if acorn is broken after moving
+            if (broken) { dis = true; }
         }
+
     }
 }

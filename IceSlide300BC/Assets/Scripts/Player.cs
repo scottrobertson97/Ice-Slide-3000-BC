@@ -25,6 +25,8 @@ public class Player : MonoBehaviour {
     public void Reset()
     {
         arrayPosition = gameManager.playerPos;
+        moveTimer = 0;
+        isMoving = false;
     }
 
 
