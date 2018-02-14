@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour {
 
     public bool isPlaying;
     public Vector2Int playerPos;
+    public GameObject pauseMenu;
 
 	//list of maps
 	public List<Texture2D> maps;
@@ -59,12 +60,52 @@ public class GameManager : MonoBehaviour {
 
     }
 
-    // Update is called once per frame
-    void Update () {
+    // resume button function
+    public void ResumeButton()
+    {
+        isPlaying = !isPlaying;
+    }
+
+    // level select button function - lose current levels progress
+    public void LevelSelectButton()
+    {
+        // UnityEngine.SceneManagement.SceneManager.LoadScene("start");
+        // would have to call level select canvas from outside this scene
+        // possibly add separate level select canvas in this scene
+
+    }
+
+    // quit to main menu button
+    public void QuitToMainMenu()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("start");
+    }
+
+    // handle code for displaying or hiding pause menu
+    void TogglePause()
+    {
         if (Input.GetKeyDown(KeyCode.P))//Pause
         {
             isPlaying = !isPlaying;
         }
+        
+        if (isPlaying == true)
+        {
+            pauseMenu.SetActive(false);
+        }
+        else
+        {
+            pauseMenu.SetActive(true);
+        }
+    }
+
+    // Update is called once per frame
+    void Update ()
+    {
+        // call pause method to constantly check playing status
+        TogglePause();
+
+        // check for reset too
         if (Input.GetKeyDown(KeyCode.R) && !isPlaying)
         {
             Reset();
