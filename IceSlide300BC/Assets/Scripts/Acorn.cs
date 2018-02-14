@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Acorn : MonoBehaviour {
-    private bool isMoving;
-    public bool finished;
+    public bool isMoving;
+    public bool broken;
 
     private SpriteRenderer spriteRenderer;
     private SpriteRenderer spriteRendererN;
@@ -29,15 +29,20 @@ public class Acorn : MonoBehaviour {
 
         spriteRenderer = transform.GetComponent<SpriteRenderer>();
         spriteRendererN = transform.GetChild(0).transform.GetComponent<SpriteRenderer>(); //Sprite Renderer for number of hits
-        spriteRendererN.sprite = numbers[4];//Sets to 5
+        spriteRendererN.sprite = numbers[hits];
 
         moveTimer = 0;
         isMoving = false;
-        finished = false;
-        hits = 5;
+        broken = false;
 
         dis = false;
         alpha = 100;
+    }
+
+    //Sets number of hits
+    public void setHits(int hit)
+    {
+        hits = hit;
     }
 
     //Set destination / future position
@@ -50,12 +55,13 @@ public class Acorn : MonoBehaviour {
     //Makes acorn Fade out over time
     void Disappear()
     {
-        if (dis && finished)
+        if (dis && broken)
         {
             Color aColor = spriteRenderer.color;
             alpha -= 2;
             aColor.a = alpha;
             spriteRenderer.color = aColor;
+            spriteRendererN.color = aColor;
 
             if (alpha <= 0) dis = false;
         }
@@ -89,11 +95,9 @@ public class Acorn : MonoBehaviour {
         hits--;
         if (hits <= 0)
         {
-            dis = true;
-            finished = true;
+            broken = true;
             return;
         }
-        spriteRendererN.sprite = numbers[hits-1];
     }
 
     // Update is called once per frame
@@ -125,6 +129,11 @@ public class Acorn : MonoBehaviour {
             arrayPosition = destination;
             //set the transform
             transform.position = new Vector3(arrayPosition.x, arrayPosition.y, 0);
+
+            //change the number sprite
+            spriteRendererN.sprite = numbers[hits];
+            //check if acorn is broken after moving
+            if (broken) { dis = true; }
         }
 
     }

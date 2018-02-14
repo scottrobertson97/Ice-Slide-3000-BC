@@ -6,8 +6,8 @@ public enum Board : int {Floor, Wall, Acorn, Player};
 public struct Level
 {
 	public Board[,] board;
-	public List<GameObject> acorns;
-    public List<GameObject> walls;
+	public List<Acorn> acorns;
+    public List<GameObject> objects;
     public Vector3 playerPosition;
     public int score;
 }
@@ -35,13 +35,13 @@ public class GameManager : MonoBehaviour {
     //Destroys all game objects in level for Re-generation
     void ClearLevel()
     {
-        foreach(GameObject acorn in currentLevel.acorns)
+        foreach(Acorn acorn in currentLevel.acorns)
         {
-            Destroy(acorn);
+            DestroyImmediate(acorn);
         }
-        foreach (GameObject wall in currentLevel.walls)
+        foreach (GameObject obj in currentLevel.objects)
         {
-            Destroy(wall);
+            Destroy(obj);
         }
     }
 
@@ -122,7 +122,7 @@ public class GameManager : MonoBehaviour {
 	private bool MoveAcorn(Vector2Int acornPosition, Vector2Int direction){
 		Acorn acorn = GetAcornAtPosition (acornPosition);
 
-        if (acorn.finished) return true;
+        if (acorn.broken) return true;
 
 		Vector2Int destination = acornPosition;
 		Vector2Int futurePos = acornPosition + direction;
@@ -149,7 +149,7 @@ public class GameManager : MonoBehaviour {
 			if (currentLevel.board[futurePos.x, futurePos.y] != Board.Floor)
             {
                 destination = futurePos - direction;
-                acorn.TakeHit();//reduce the acorn hits
+                if (currentLevel.board[futurePos.x, futurePos.y] == Board.Wall) { acorn.TakeHit(); }//reduce the acorn hits
                 break;
             }
 
@@ -161,7 +161,7 @@ public class GameManager : MonoBehaviour {
 		acorn.SetDestination(direction, destination);
 
         //Update board for new acorn location
-		if (!isOutOfBounds && !acorn.finished) currentLevel.board[destination.x, destination.y] = Board.Acorn;
+		if (!isOutOfBounds && !acorn.broken) currentLevel.board[destination.x, destination.y] = Board.Acorn;
         currentLevel.board[acorn.arrayPosition.x, acorn.arrayPosition.y] = Board.Floor;
 
 		//return true, so they player moves as they push or false, if the player needs to be reset
@@ -176,9 +176,9 @@ public class GameManager : MonoBehaviour {
 	private Acorn GetAcornAtPosition(Vector2Int acornPosition){
 		Acorn acorn = null;
 		//search through the acorns in this level to find the one at the position
-		foreach (GameObject a in currentLevel.acorns) {
+		foreach (Acorn a in currentLevel.acorns) {
 			if ((int)a.transform.position.x == acornPosition.x && (int)a.transform.position.y == acornPosition.y) {
-				acorn = a.GetComponent<Acorn> ();
+				acorn = a;
 			}
 		}
 		if (acorn == null) {
@@ -198,10 +198,9 @@ public class GameManager : MonoBehaviour {
         }
         else
         {
-            foreach (GameObject acorn in currentLevel.acorns)
+            foreach (Acorn acorn in currentLevel.acorns)
             {
-                Acorn a = acorn.GetComponent<Acorn>();
-                if (!a.finished)
+                if (!acorn.broken)
                 {
                     moves++;
                     return true;

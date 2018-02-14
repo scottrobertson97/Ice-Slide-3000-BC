@@ -22,8 +22,8 @@ public class LevelGenerator : MonoBehaviour {
 		this.map = _map;
 		Level level = new Level();
 		level.board = new Board[map.width, map.height];
-		level.acorns = new List<GameObject> ();
-        level.walls = new List<GameObject>();
+		level.acorns = new List<Acorn> ();
+        level.objects = new List<GameObject>();
         level.playerPosition = new Vector3();
 
 		floorSprite.GetComponent<SpriteRenderer> ().size = new Vector2 (map.width, map.height);
@@ -41,15 +41,18 @@ public class LevelGenerator : MonoBehaviour {
 		Color pixelColor = map.GetPixel (x, y);
 
 		if (pixelColor == Color.black) {
-			GameObject wall = (GameObject)Instantiate (wallPrefab, new Vector3 (x, y, 0), Quaternion.identity);
-            level.walls.Add(wall);
+			GameObject wall = Instantiate (wallPrefab, new Vector3 (x, y, 0), Quaternion.identity);
+            level.objects.Add(wall);
 			return Board.Wall;
 		} else if (pixelColor == Color.blue) {
 			GameObject.Find ("Player").transform.position = new Vector3 (x, y, 0);
             level.playerPosition = new Vector3(x, y, 0);
 			return Board.Floor;
-		} else if (pixelColor == Color.green) {
-			GameObject acorn = (GameObject)Instantiate (acornPrefab, new Vector3 (x, y, 0), Quaternion.identity);
+		} else if ((255 * pixelColor.g) == 255 && pixelColor.b != 1) {
+			GameObject a = Instantiate (acornPrefab, new Vector3 (x, y, 0), Quaternion.identity);
+            Acorn acorn = a.GetComponent<Acorn>();
+            acorn.setHits((int)(255 * pixelColor.b));
+            level.objects.Add(a);
 			level.acorns.Add (acorn);
 			return Board.Acorn;
 		}else {
