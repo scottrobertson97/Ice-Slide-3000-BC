@@ -8,10 +8,16 @@ public class UIManager : MonoBehaviour {
     public GameObject menuCanvas;
     public GameObject levelSelectCanvas;
     public GameObject highScoresCanvas;
+	public GameObject levelSelectObject;
+
+	void Start () {
+		DontDestroyOnLoad (levelSelectObject);
+	}
 
     // start button on main menu
-    public void LoadGame()
+	public void LoadGame(int level)
     {
+		levelSelectObject.GetComponent<LevelSelectObject> ().level = level;
         UnityEngine.SceneManagement.SceneManager.LoadScene("main");
     }
 

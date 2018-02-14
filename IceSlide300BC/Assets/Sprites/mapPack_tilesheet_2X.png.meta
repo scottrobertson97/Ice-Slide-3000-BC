@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: e9f7949616008544fb842af5b5647c1d
-timeCreated: 1517581288
+timeCreated: 1517839863
 licenseType: Pro
 TextureImporter:
   fileIDToRecycleName:
@@ -334,40 +334,12 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1280
-        y: 1408
-        width: 128
-        height: 128
+        y: 1155
+        width: 384
+        height: 381
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: mapPack_tilesheet_2X_11
-      rect:
-        serializedVersion: 2
-        x: 1408
-        y: 1408
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: mapPack_tilesheet_2X_12
-      rect:
-        serializedVersion: 2
-        x: 1536
-        y: 1408
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 128, y: 128, z: 128, w: 128}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -460,48 +432,6 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1152
-        y: 1280
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: mapPack_tilesheet_2X_26
-      rect:
-        serializedVersion: 2
-        x: 1280
-        y: 1280
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: mapPack_tilesheet_2X_27
-      rect:
-        serializedVersion: 2
-        x: 1408
-        y: 1280
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: mapPack_tilesheet_2X_28
-      rect:
-        serializedVersion: 2
-        x: 1536
         y: 1280
         width: 128
         height: 128
@@ -628,48 +558,6 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1152
-        y: 1152
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: mapPack_tilesheet_2X_42
-      rect:
-        serializedVersion: 2
-        x: 1280
-        y: 1152
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: mapPack_tilesheet_2X_43
-      rect:
-        serializedVersion: 2
-        x: 1408
-        y: 1152
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: mapPack_tilesheet_2X_44
-      rect:
-        serializedVersion: 2
-        x: 1536
         y: 1152
         width: 128
         height: 128
@@ -848,48 +736,6 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: mapPack_tilesheet_2X_69
-      rect:
-        serializedVersion: 2
-        x: 640
-        y: 896
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: mapPack_tilesheet_2X_70
-      rect:
-        serializedVersion: 2
-        x: 768
-        y: 896
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: mapPack_tilesheet_2X_71
-      rect:
-        serializedVersion: 2
-        x: 896
-        y: 896
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
       name: mapPack_tilesheet_2X_72
       rect:
         serializedVersion: 2
@@ -922,40 +768,12 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1280
-        y: 896
-        width: 128
-        height: 128
+        y: 642
+        width: 384
+        height: 384
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: mapPack_tilesheet_2X_75
-      rect:
-        serializedVersion: 2
-        x: 1408
-        y: 896
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: mapPack_tilesheet_2X_76
-      rect:
-        serializedVersion: 2
-        x: 1536
-        y: 896
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 128, y: 128, z: 128, w: 128}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1030,48 +848,6 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: mapPack_tilesheet_2X_85
-      rect:
-        serializedVersion: 2
-        x: 640
-        y: 768
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: mapPack_tilesheet_2X_86
-      rect:
-        serializedVersion: 2
-        x: 768
-        y: 768
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: mapPack_tilesheet_2X_87
-      rect:
-        serializedVersion: 2
-        x: 896
-        y: 768
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
       name: mapPack_tilesheet_2X_88
       rect:
         serializedVersion: 2
@@ -1090,48 +866,6 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1152
-        y: 768
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: mapPack_tilesheet_2X_90
-      rect:
-        serializedVersion: 2
-        x: 1280
-        y: 768
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: mapPack_tilesheet_2X_91
-      rect:
-        serializedVersion: 2
-        x: 1408
-        y: 768
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: mapPack_tilesheet_2X_92
-      rect:
-        serializedVersion: 2
-        x: 1536
         y: 768
         width: 128
         height: 128
@@ -1226,44 +960,16 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: mapPack_tilesheet_2X_101
+      name: mapPack_tilesheet_2X_103
       rect:
         serializedVersion: 2
         x: 640
         y: 640
-        width: 128
-        height: 128
+        width: 384
+        height: 384
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: mapPack_tilesheet_2X_102
-      rect:
-        serializedVersion: 2
-        x: 768
-        y: 640
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: mapPack_tilesheet_2X_103
-      rect:
-        serializedVersion: 2
-        x: 896
-        y: 640
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 128, y: 128, z: 128, w: 128}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1286,48 +992,6 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1152
-        y: 640
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: mapPack_tilesheet_2X_106
-      rect:
-        serializedVersion: 2
-        x: 1280
-        y: 640
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: mapPack_tilesheet_2X_107
-      rect:
-        serializedVersion: 2
-        x: 1408
-        y: 640
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: mapPack_tilesheet_2X_108
-      rect:
-        serializedVersion: 2
-        x: 1536
         y: 640
         width: 128
         height: 128

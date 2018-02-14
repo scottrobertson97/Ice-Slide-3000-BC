@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        currentLevelID = 0;
+        currentLevelID = GameObject.Find ("LevelSelectObject").GetComponent<LevelSelectObject> ().level;
         GenerateLevel(currentLevelID);
         playerPos = new Vector2Int((int)currentLevel.playerPosition.x, (int)currentLevel.playerPosition.y);
         isPlaying = true;
@@ -116,6 +116,7 @@ public class GameManager : MonoBehaviour {
 	private void GenerateLevel(int index)
     {
 		currentLevel = GetComponent<LevelGenerator> ().GenerateLevel (maps[index]);
+		SetCameraBounds ();
     }
 
     /// <summary>
@@ -126,7 +127,7 @@ public class GameManager : MonoBehaviour {
     /// <param name="futurePos">Future position of the player.</param>
     public bool CanPlayerMove (Vector2Int currentPos, Vector2Int futurePos) {
         //check if the player is moving out of bounds
-		if (futurePos.x < 0 || futurePos.x >= 10 || futurePos.y < 0 || futurePos.y >= 10) {
+		if (IsOutOfBounds(futurePos.x, futurePos.y)) {
 			return false;
 		}
         //makes sure that the player is moving onto a tile that is open
@@ -153,7 +154,7 @@ public class GameManager : MonoBehaviour {
 
 		bool isOutOfBounds = false;
 
-        if (!(futurePos.x < 0 || futurePos.x >= 10 || futurePos.y < 0 || futurePos.y >= 10)) {
+		if (!IsOutOfBounds(futurePos.x, futurePos.y)) {
             if (currentLevel.board[futurePos.x, futurePos.y] != Board.Floor)
                 return false;
         }
@@ -162,7 +163,7 @@ public class GameManager : MonoBehaviour {
         while (true)
         {
             //if acorn is out of bounds
-            if (futurePos.x < 0 || futurePos.x >= 10 || futurePos.y < 0 || futurePos.y >= 10)
+			if (IsOutOfBounds(futurePos.x, futurePos.y))
             {
 				//moves acorn off grid
 				destination = futurePos;
@@ -232,6 +233,7 @@ public class GameManager : MonoBehaviour {
     {
         isPlaying = false;
         Debug.Log("You're Loser");
+		//GenerateLevel (currentLevelID);
         //ShowLoseSceen();
     }
 
@@ -241,4 +243,14 @@ public class GameManager : MonoBehaviour {
         Debug.Log("You're Winner");
         //ShowWinScreen();
     }
+
+	private bool IsOutOfBounds(int x, int y){
+		return (x < 0 || x >= currentLevel.board.GetLength(0) || y < 0 || y >= currentLevel.board.GetLength(1));
+	}
+
+	private void SetCameraBounds(){
+		GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera> ().orthographicSize = currentLevel.board.GetLength (0)/2.0f + 1;
+		Vector3 camPos = GameObject.FindGameObjectWithTag ("MainCamera").transform.position;
+		GameObject.FindGameObjectWithTag ("MainCamera").transform.position = new Vector3(camPos.x, currentLevel.board.GetLength (0)/2.0f - 1, camPos.z);
+	}
 }
