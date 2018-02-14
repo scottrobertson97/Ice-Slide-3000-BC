@@ -17,7 +17,7 @@ public class UIManager : MonoBehaviour {
     // start button on main menu
 	public void LoadGame(int level)
     {
-		levelSelectObject.GetComponent<LevelSelectObject> ().level = level;
+		levelSelectObject.GetComponent<LevelSelectObject>().level = level;
         UnityEngine.SceneManagement.SceneManager.LoadScene("main");
     }
 
@@ -41,6 +41,27 @@ public class UIManager : MonoBehaviour {
 
         menuCanvas.SetActive(true);
     }
+
+    // level selection method
+    public void LevelSelection()
+    {
+        GameObject pressedButton = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
+        string level = pressedButton.name;
+        Debug.Log(level);
+        int levelindex = 0;
+        bool tryyy = int.TryParse(level, out levelindex);
+
+        if (tryyy == true)
+        {
+            Debug.Log("parsed. num = " + levelindex);
+        }
+        else
+        {
+            Debug.Log("number not parsed");
+        }
+        LoadGame(levelindex);
+    }
+
     // display high scores
     public void LoadHighScores()
     {

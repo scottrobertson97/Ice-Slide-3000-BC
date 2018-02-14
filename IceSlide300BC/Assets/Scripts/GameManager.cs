@@ -15,16 +15,23 @@ public class GameManager : MonoBehaviour {
 	private Level currentLevel;
     private int currentLevelID;//number of current level
 
+    // gamestate for witholdding pause mechanic and showing correct end game screens
+    // 0 = in progress
+    // 1 = win
+    // 2 = lose
+    int gamestate = 0;
+
     public bool isPlaying;
     public Vector2Int playerPos;
     public GameObject pauseMenu;
+    public GameObject levelSelectMenu;
 
 	//list of maps
 	public List<Texture2D> maps;
 
 	// Use this for initialization
 	void Start () {
-        currentLevelID = GameObject.Find ("LevelSelectObject").GetComponent<LevelSelectObject> ().level;
+        currentLevelID = GameObject.Find("LevelSelectObject").GetComponent<LevelSelectObject>().level;
         GenerateLevel(currentLevelID);
         playerPos = new Vector2Int((int)currentLevel.playerPosition.x, (int)currentLevel.playerPosition.y);
         isPlaying = true;
@@ -66,25 +73,30 @@ public class GameManager : MonoBehaviour {
         isPlaying = !isPlaying;
     }
 
-    // level select button function - lose current levels progress
+    // level select button
     public void LevelSelectButton()
     {
-        // UnityEngine.SceneManagement.SceneManager.LoadScene("start");
-        // would have to call level select canvas from outside this scene
-        // possibly add separate level select canvas in this scene
-
+        levelSelectMenu.SetActive(true);
     }
 
     // quit to main menu button
     public void QuitToMainMenu()
     {
+        // reset selected level data
+        Destroy(GameObject.Find("LevelSelectObject"));
         UnityEngine.SceneManagement.SceneManager.LoadScene("start");
+    }
+
+    // back to pause menu from level select menu
+    public void BackButton()
+    {
+        levelSelectMenu.SetActive(false);
     }
 
     // handle code for displaying or hiding pause menu
     void TogglePause()
     {
-        if (Input.GetKeyDown(KeyCode.P))//Pause
+        if (Input.GetKeyDown(KeyCode.P) && gamestate == 0)//Pause
         {
             isPlaying = !isPlaying;
         }
@@ -93,7 +105,7 @@ public class GameManager : MonoBehaviour {
         {
             pauseMenu.SetActive(false);
         }
-        else
+        else if (isPlaying == false && gamestate == 0)
         {
             pauseMenu.SetActive(true);
         }
@@ -105,17 +117,37 @@ public class GameManager : MonoBehaviour {
         // call pause method to constantly check playing status
         TogglePause();
 
-        // check for reset too
-        if (Input.GetKeyDown(KeyCode.R) && !isPlaying)
+        // check for reset too - when though? and we need to remember to reset move counter in UI
+        if (Input.GetKeyDown(KeyCode.R) /*&& !isPlaying*/)
         {
             Reset();
         }
     }
 
-
-	private void GenerateLevel(int index)
+    // level selection method
+    public void LevelSelection()
     {
-		currentLevel = GetComponent<LevelGenerator> ().GenerateLevel (maps[index]);
+        GameObject pressedButton = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
+        string level = pressedButton.name;
+        Debug.Log(level);
+        int levelindex = 0;
+        bool tryyy = int.TryParse(level, out levelindex);
+
+        if (tryyy == true)
+        {
+            Debug.Log("parsed. num = " + levelindex);
+            currentLevelID = levelindex;
+        }
+        else
+        {
+            Debug.Log("number not parsed");
+        }
+        Reset();
+    }
+
+    private void GenerateLevel(int index)
+    {
+		currentLevel = GetComponent<LevelGenerator>().GenerateLevel(maps[index]);
 		SetCameraBounds ();
     }
 
@@ -231,6 +263,8 @@ public class GameManager : MonoBehaviour {
 
     private void Lose()
     {
+        // prevent pause menu from appearing during win/lose
+        gamestate = 2;
         isPlaying = false;
         Debug.Log("You're Loser");
 		//GenerateLevel (currentLevelID);
@@ -239,6 +273,8 @@ public class GameManager : MonoBehaviour {
 
     private void Win()
     {
+        // prevent pause menu from appearing during win/lose
+        gamestate = 1;
         isPlaying = false;
         Debug.Log("You're Winner");
         //ShowWinScreen();
