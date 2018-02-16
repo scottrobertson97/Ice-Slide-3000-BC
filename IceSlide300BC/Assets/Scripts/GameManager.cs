@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour {
     // 2 = lose
     int gamestate = 0;
 
-    public bool isPlaying;
+    public bool isPlaying = true;
     public Vector2Int playerPos;
     public GameObject pauseMenu;
     public GameObject levelSelectMenu;
@@ -150,6 +150,8 @@ public class GameManager : MonoBehaviour {
         {
             Debug.Log("parsed. num = " + levelindex);
             currentLevelID = levelindex;
+			levelSelectMenu.SetActive(false);
+
         }
         else
         {
