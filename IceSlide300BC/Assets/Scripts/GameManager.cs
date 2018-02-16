@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum Board : int {Floor, Wall, Acorn, Player};
+public enum Gamestate : int { inProgress, win, lose, };
 public struct Level
 {
 	public Board[,] board;
@@ -135,6 +136,15 @@ public class GameManager : MonoBehaviour {
         {
             Reset();
         }
+
+        bool isOut = false;
+        foreach (Acorn acrn in currentLevel.acorns)
+        {
+            if (acrn.isMoving) return;
+            if (acrn.isOut) isOut = true;
+        }
+
+        CheckConditions(isOut);
     }
 
     // level selection method
@@ -196,7 +206,12 @@ public class GameManager : MonoBehaviour {
 	/// <returns><c>true</c>, if acorn was moved, <c>false</c> otherwise.</returns>
 	/// <param name="direction">Direction.</param>
 	private bool MoveAcorn(Vector2Int acornPosition, Vector2Int direction){
-		Acorn acorn = GetAcornAtPosition (acornPosition);
+
+        foreach (Acorn acn in currentLevel.acorns){
+            if (acn.isMoving) { return false; }
+        }
+
+        Acorn acorn = GetAcornAtPosition (acornPosition);
 
         if (acorn.broken) return true;
 
@@ -219,6 +234,7 @@ public class GameManager : MonoBehaviour {
 				//moves acorn off grid
 				destination = futurePos;
 				isOutOfBounds = true;
+                acorn.isOut = true;
                 break;
             }
             //Set acorn next to wall
@@ -235,12 +251,20 @@ public class GameManager : MonoBehaviour {
         //Sets acorn destination
 
 		acorn.SetDestination(direction, destination);
+        acorn.isMoving = true;
 
         //Update board for new acorn location
 		if (!isOutOfBounds && !acorn.broken) currentLevel.board[destination.x, destination.y] = Board.Acorn;
         currentLevel.board[acorn.arrayPosition.x, acorn.arrayPosition.y] = Board.Floor;
 
-		//return true, so they player moves as they push or false, if the player needs to be reset
+        //return true, so they player moves as they push or false, if the player needs to be reset
+        foreach (Acorn acrn in currentLevel.acorns)
+        {
+            if (acorn.isMoving)
+            {
+                return false;
+            }
+        }
         return CheckConditions(isOutOfBounds); ;
 	}
 

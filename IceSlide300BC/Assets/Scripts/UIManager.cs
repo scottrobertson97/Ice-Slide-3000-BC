@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour {
     // objects for referencing canvases
     public GameObject menuCanvas;
     public GameObject levelSelectCanvas;
+    public GameObject controlsCanvas;
     public GameObject highScoresCanvas;
 	public GameObject levelSelectObject;
 
@@ -76,6 +77,14 @@ public class UIManager : MonoBehaviour {
         // hide menu canvas and display level select canvas
         menuCanvas.SetActive(false);
         levelSelectCanvas.SetActive(true);
+    }
+
+    // display controls screen
+    public void LoadControls()
+    {
+        // hide menu canvas and display level select canvas
+        menuCanvas.SetActive(false);
+        controlsCanvas.SetActive(true);
     }
 
     // display game end screen
