@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum Board : int {Floor, Wall, Acorn, Player};
+public enum Gamestate : int { inProgress, win, lose, };
 public struct Level
 {
 	public Board[,] board;
