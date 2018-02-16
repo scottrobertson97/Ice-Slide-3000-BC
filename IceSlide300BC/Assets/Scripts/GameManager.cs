@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum Board : int {Floor, Wall, Acorn, Player};
-public enum Gamestate : int { inProgress, win, lose, };
+public enum Gamestate : int { InProgress, Win, Lose, Paused};
 public struct Level
 {
 	public Board[,] board;
@@ -17,13 +17,7 @@ public class GameManager : MonoBehaviour {
 	private Level currentLevel;
     private int currentLevelID;//number of current level
 
-    // gamestate for witholdding pause mechanic and showing correct end game screens
-    // 0 = in progress
-    // 1 = win
-    // 2 = lose
-    int gamestate = 0;
-
-    public bool isPlaying = true;
+	public Gamestate gamestate = Gamestate.InProgress;
     public Vector2Int playerPos;
     public GameObject pauseMenu;
     public GameObject levelSelectMenu;
@@ -38,7 +32,6 @@ public class GameManager : MonoBehaviour {
 	void Start () {
         currentLevelID = GameObject.Find("LevelSelectObject").GetComponent<LevelSelectObject>().level;
         GenerateLevel(currentLevelID);
-        isPlaying = true;
 	}
 
     //Destroys all game objects in level for Re-generation
@@ -61,7 +54,7 @@ public class GameManager : MonoBehaviour {
         GenerateLevel(currentLevelID);
         Player p = FindObjectOfType<Player>();
         p.Reset();
-        isPlaying = true;
+		gamestate = Gamestate.InProgress;
     }
 
     //Goes to next level
@@ -77,14 +70,14 @@ public class GameManager : MonoBehaviour {
 
         fails = 0;
         moves = 0;
-        isPlaying = true;
+		gamestate = Gamestate.InProgress;
 
     }
 
     // resume button function
     public void ResumeButton()
     {
-        isPlaying = !isPlaying;
+		gamestate = Gamestate.InProgress;
     }
 
     // level select button
@@ -110,18 +103,18 @@ public class GameManager : MonoBehaviour {
     // handle code for displaying or hiding pause menu
     void TogglePause()
     {
-        if (Input.GetKeyDown(KeyCode.P) && gamestate == 0)//Pause
+		if (Input.GetKeyDown(KeyCode.P))//Pause
         {
-            isPlaying = !isPlaying;
-        }
-        
-        if (isPlaying == true)
-        {
-            pauseMenu.SetActive(false);
-        }
-        else if (isPlaying == false && gamestate == 0)
-        {
-            pauseMenu.SetActive(true);
+			switch (gamestate) {
+			case Gamestate.InProgress:
+				pauseMenu.SetActive (true);
+				gamestate = Gamestate.Paused;
+				break;
+			case Gamestate.Paused:
+				pauseMenu.SetActive (false);
+				gamestate = Gamestate.InProgress;
+				break;
+			}
         }
     }
 
@@ -313,9 +306,7 @@ public class GameManager : MonoBehaviour {
 
     private void Lose()
     {
-        // prevent pause menu from appearing during win/lose
-        gamestate = 2;
-        isPlaying = false;
+		gamestate = Gamestate.Lose;
         Debug.Log("You're Loser");
         fails++;
         Reset();
@@ -324,9 +315,7 @@ public class GameManager : MonoBehaviour {
 
     private void Win()
     {
-        // prevent pause menu from appearing during win/lose
-        gamestate = 1;
-        isPlaying = false;
+		gamestate = Gamestate.Win;
         Debug.Log("You're Winner");
         NextLevel();
         //ShowWinScreen();

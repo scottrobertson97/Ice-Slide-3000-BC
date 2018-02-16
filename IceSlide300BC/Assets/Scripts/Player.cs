@@ -35,7 +35,7 @@ public class Player : MonoBehaviour {
     /// </summary>
     private void Move()
 	{
-        if (gameManager.isPlaying)
+		if (gameManager.gamestate == Gamestate.InProgress)
         {
             //what to so if the player is currently moving
             //this returns at the end, so if the player is moving then there is not input
