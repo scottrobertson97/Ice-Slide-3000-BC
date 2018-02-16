@@ -6,9 +6,10 @@ public enum Board : int {Floor, Wall, Acorn, Player};
 public struct Level
 {
 	public Board[,] board;
-	public List<GameObject> acorns;
-    public List<GameObject> walls;
+	public List<Acorn> acorns;
+    public List<GameObject> objects;
     public Vector3 playerPosition;
+    public int score;
 }
 
 public class GameManager : MonoBehaviour {	
@@ -26,6 +27,9 @@ public class GameManager : MonoBehaviour {
     public GameObject pauseMenu;
     public GameObject levelSelectMenu;
 
+    public int moves;//number of player moves
+    public int fails; //number of player fails
+
 	//list of maps
 	public List<Texture2D> maps;
 
@@ -33,20 +37,19 @@ public class GameManager : MonoBehaviour {
 	void Start () {
         currentLevelID = GameObject.Find("LevelSelectObject").GetComponent<LevelSelectObject>().level;
         GenerateLevel(currentLevelID);
-        playerPos = new Vector2Int((int)currentLevel.playerPosition.x, (int)currentLevel.playerPosition.y);
         isPlaying = true;
 	}
 
     //Destroys all game objects in level for Re-generation
     void ClearLevel()
     {
-        foreach(GameObject acorn in currentLevel.acorns)
+        foreach(Acorn acorn in currentLevel.acorns)
         {
-            Destroy(acorn);
+            DestroyImmediate(acorn);
         }
-        foreach (GameObject wall in currentLevel.walls)
+        foreach (GameObject obj in currentLevel.objects)
         {
-            Destroy(wall);
+            Destroy(obj);
         }
     }
 
@@ -55,6 +58,8 @@ public class GameManager : MonoBehaviour {
     {
         ClearLevel();
         GenerateLevel(currentLevelID);
+        Player p = FindObjectOfType<Player>();
+        p.Reset();
         isPlaying = true;
     }
 
@@ -64,6 +69,14 @@ public class GameManager : MonoBehaviour {
         currentLevelID++;
         ClearLevel();
         GenerateLevel(currentLevelID);
+        Player p = FindObjectOfType<Player>();
+        p.Reset();
+
+        //Calculate Score Here
+
+        fails = 0;
+        moves = 0;
+        isPlaying = true;
 
     }
 
@@ -149,6 +162,7 @@ public class GameManager : MonoBehaviour {
     {
 		currentLevel = GetComponent<LevelGenerator>().GenerateLevel(maps[index]);
 		SetCameraBounds ();
+        playerPos = new Vector2Int((int)currentLevel.playerPosition.x, (int)currentLevel.playerPosition.y);
     }
 
     /// <summary>
@@ -164,6 +178,7 @@ public class GameManager : MonoBehaviour {
 		}
         //makes sure that the player is moving onto a tile that is open
 		else if(currentLevel.board[futurePos.x, futurePos.y] == Board.Floor){
+            moves++;
             return true;
         }
 		else if(currentLevel.board[futurePos.x, futurePos.y] == Board.Acorn){
@@ -180,6 +195,8 @@ public class GameManager : MonoBehaviour {
 	/// <param name="direction">Direction.</param>
 	private bool MoveAcorn(Vector2Int acornPosition, Vector2Int direction){
 		Acorn acorn = GetAcornAtPosition (acornPosition);
+
+        if (acorn.broken) return true;
 
 		Vector2Int destination = acornPosition;
 		Vector2Int futurePos = acornPosition + direction;
@@ -200,14 +217,13 @@ public class GameManager : MonoBehaviour {
 				//moves acorn off grid
 				destination = futurePos;
 				isOutOfBounds = true;
-                Lose();
                 break;
             }
             //Set acorn next to wall
 			if (currentLevel.board[futurePos.x, futurePos.y] != Board.Floor)
             {
                 destination = futurePos - direction;
-                acorn.TakeHit();//reduce the acorn hits
+                if (currentLevel.board[futurePos.x, futurePos.y] == Board.Wall) { acorn.TakeHit(); }//reduce the acorn hits
                 break;
             }
 
@@ -219,12 +235,11 @@ public class GameManager : MonoBehaviour {
 		acorn.SetDestination(direction, destination);
 
         //Update board for new acorn location
-		if (!isOutOfBounds) currentLevel.board[destination.x, destination.y] = Board.Acorn;
+		if (!isOutOfBounds && !acorn.broken) currentLevel.board[destination.x, destination.y] = Board.Acorn;
         currentLevel.board[acorn.arrayPosition.x, acorn.arrayPosition.y] = Board.Floor;
 
-        CheckConditions(isOutOfBounds);
-		//return true, so they player moves as they push
-        return true;
+		//return true, so they player moves as they push or false, if the player needs to be reset
+        return CheckConditions(isOutOfBounds); ;
 	}
 
 	/// <summary>
@@ -235,9 +250,9 @@ public class GameManager : MonoBehaviour {
 	private Acorn GetAcornAtPosition(Vector2Int acornPosition){
 		Acorn acorn = null;
 		//search through the acorns in this level to find the one at the position
-		foreach (GameObject a in currentLevel.acorns) {
+		foreach (Acorn a in currentLevel.acorns) {
 			if ((int)a.transform.position.x == acornPosition.x && (int)a.transform.position.y == acornPosition.y) {
-				acorn = a.GetComponent<Acorn> ();
+				acorn = a;
 			}
 		}
 		if (acorn == null) {
@@ -248,17 +263,26 @@ public class GameManager : MonoBehaviour {
 	}
 
     //Check Win conditions
-    private void CheckConditions(bool isOutOfBounds)
+    private bool CheckConditions(bool isOutOfBounds)
     {
-        foreach (GameObject acorn in currentLevel.acorns)
+        if (isOutOfBounds)
         {
-            Acorn a = acorn.GetComponent<Acorn>();
-            if (!a.finished)
-            {
-                return;
-            }
+            Lose();
+            return false;
         }
-        Win();
+        else
+        {
+            foreach (Acorn acorn in currentLevel.acorns)
+            {
+                if (!acorn.broken)
+                {
+                    moves++;
+                    return true;
+                }
+            }
+            Win();
+            return false;
+        }
     }
 
     private void Lose()
@@ -267,7 +291,8 @@ public class GameManager : MonoBehaviour {
         gamestate = 2;
         isPlaying = false;
         Debug.Log("You're Loser");
-		//GenerateLevel (currentLevelID);
+        fails++;
+        Reset();
         //ShowLoseSceen();
     }
 
@@ -277,6 +302,7 @@ public class GameManager : MonoBehaviour {
         gamestate = 1;
         isPlaying = false;
         Debug.Log("You're Winner");
+        NextLevel();
         //ShowWinScreen();
     }
 
