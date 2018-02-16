@@ -78,6 +78,7 @@ public class GameManager : MonoBehaviour {
     public void ResumeButton()
     {
 		gamestate = Gamestate.InProgress;
+		pauseMenu.SetActive (false);
     }
 
     // level select button
