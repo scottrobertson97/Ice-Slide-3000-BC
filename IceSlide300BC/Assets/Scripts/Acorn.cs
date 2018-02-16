@@ -5,6 +5,7 @@ using UnityEngine;
 public class Acorn : MonoBehaviour {
     public bool isMoving;
     public bool broken;
+    public bool isOut;
 
     private SpriteRenderer spriteRenderer;
     private SpriteRenderer spriteRendererN;
@@ -34,6 +35,7 @@ public class Acorn : MonoBehaviour {
         moveTimer = 0;
         isMoving = false;
         broken = false;
+        isOut = false;
 
         dis = false;
         alpha = 100;
